@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useEffect} from 'react';
 import { makeStyles } from '@mui/styles';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
@@ -13,8 +13,8 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-
-import {callApiTest} from '../actions/ApiCalls'
+import CoinSelection from './CoinSelection';
+import {callApiTest, fetchCoinList} from '../actions/ApiCalls'
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -25,12 +25,21 @@ const useStyles = makeStyles((theme) => ({
 
 const PositionCalculator = ({state, dispatch}) => {
     const classes = useStyles();
+    const coinList = state.coinList;
+
+    useEffect(() => {
+        doFetchCoinList({state, dispatch});
+    }, []);
+
     return (
     <div style={mainPanelStyle}>
         <Paper elevation={3} style={inputPanelStyle}>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 Position Input
             </Typography>
+            {state.coinList ? (
+                <CoinSelection state={state} dispatch={dispatch} coinList={state.coinList} />
+            ):(
             <TextField
                 id = "coin"
                 className={classes.formControl}
@@ -40,6 +49,7 @@ const PositionCalculator = ({state, dispatch}) => {
                 value={state.coin}
                 onChange={(v) => dispatch({type: "setPositionInput", item:"coin", value:v.target.value.toUpperCase()})}
             />
+            )}
             <TextField
                 id = "maxAmount"
                 className={classes.formControl}
@@ -190,6 +200,13 @@ const PositionCalculator = ({state, dispatch}) => {
 
 const callBybit = (state, dispatch) => {
     callApiTest();
+}
+
+const doFetchCoinList = async({state, dispatch}) => {
+    const coinListResp = await fetchCoinList();
+    const cointlist = coinListResp.data.result.map(v => {return {...v, label: v.name}});
+    console.log("cointlist", coinListResp);
+    dispatch({type: "setPositionInput", item:"coinList", value:cointlist});
 }
 
 const mainPanelStyle= {

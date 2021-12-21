@@ -8,6 +8,12 @@ const port = process.env.SERVER_PORT;
 const apiKey = process.env.BYBIT_API_KEY;
 const apiSecret = process.env.BYBIT_API_SECRET;
 
+app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
+})
+  
+  
+
 const client = new LinearClient (
     apiKey,
     apiSecret,
@@ -26,43 +32,26 @@ app.get('/api/bybit-test', async(req, res) => {
     res.json(apiKeyInfo);
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+app.get('/api/bybit-get-symbols', async(req, res) => {
+    // https://bybit-exchange.github.io/docs/inverse/#t-publictradingrecords
+    const symbols = await client.getSymbols();
+    return res.json(symbols);
 })
 
 
-const callBybitTestNet = async (apiKey, apiSecret) => {
-    /*
-    const restClientOptions = {
-        // override the max size of the request window (in ms)
-        recv_window?: number;
-        
-        // how often to sync time drift with bybit servers
-        sync_interval_ms?: number | string;
-        
-        // Default: false. Disable above sync mechanism if true.
-        disable_time_sync?: boolean;
-        
-        // Default: false. If true, we'll throw errors if any params are undefined
-        strict_param_validation?: boolean;
-        
-        // Optionally override API protocol + domain
-        // e.g 'https://api.bytick.com'
-        baseUrl?: string;
-        
-        // Default: true. whether to try and post-process request exceptions.
-        parse_exceptions?: boolean;
-    };¨
-    */
 
-    
-    
-    try {
-        const apiKeyInfo = await client.getApiKeyInfo();
-        console.log("apiKey result: ", apiKeyInfo);
-        const orderBook = await client.getOrderBook({ symbol: 'BTCUSDT' });
-        console.log("getOrderBook inverse result: ", orderBook);
-    } catch (e) {
-        console.log("ERROR",e);
-    }
-}
+app.get('/api/bybit-place-order', async(req, res) => {
+    // https://bybit-exchange.github.io/docs/linear/#t-placeactive
+    // side: "Buy" or "Sell"
+    // order_type: "Limit" or "Market"
+    // time_in_force:"GoodTillCancel"
+
+
+
+    const apiKeyInfo = await client.placeActiveOrder();
+    res.json(apiKeyInfo);
+
+    //{ side: string; symbol: string; order_type: string; qty: number; price?: number; time_in_force: string; take_profit?: number; stop_loss?: number; tp_trigger_by?: string; sl_trigger_by?: string; reduce_only?: boolean; close_on_trigger?: boolean; order_link_id?: string; }
+})
+
+
