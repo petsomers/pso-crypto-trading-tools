@@ -12,6 +12,7 @@ export const initialState = {
     conditional: false,
     position: {},
     apiOutput: '',
+    fetchingCoinList: false,
     callingApi: false,
 };
 
@@ -32,6 +33,7 @@ const actualReducer = (state, action) => {
             return newState;
         case 'setApiOutput': return {...state, apiOutput: action.value};
         case 'setCallingApi': return { ...state, callingApi: action.value};
+        case 'setFetchingCoinList': return {...state, fetchingCoinList: action.value};
         default:
             throw new Error("Unsupported action type: "+action.type);
     }

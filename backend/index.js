@@ -8,9 +8,9 @@ const port = process.env.SERVER_PORT;
 const apiKey = process.env.BYBIT_API_KEY;
 const apiSecret = process.env.BYBIT_API_SECRET;
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static('frontend_build'));
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+    console.log(`PSO Bybit Client listening at http://localhost:${port}`)
 })
   
   

@@ -40,6 +40,11 @@ const PositionCalculator = ({state, dispatch}) => {
             {state.coinList && (
                 <CoinSelection state={state} dispatch={dispatch} coinList={state.coinList} />
             )}
+            {state.fetchingCoinList && (
+                <Typography variant="p" component="div" sx={{ padding: 2 }}>
+                    <i>Fetching coin list</i>
+                </Typography>
+            )}
 
             <TextField
                 id = "maxAmount"
@@ -118,7 +123,7 @@ const PositionCalculator = ({state, dispatch}) => {
                 </TableRow>
                 <TableRow>
                     <TableCell component="th" scope="row">Type</TableCell>
-                    <TableCell component="th" scope="row">{state.position.type}</TableCell>
+                    <TableCell component="th" scope="row" style={{color: "white", backgroundColor:state.position.type==="LONG"?"green":"red"}}>{state.position.type}</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell component="th" scope="row">Leverage</TableCell>
@@ -201,9 +206,11 @@ const doPlaceOrder = async(state, dispatch) => {
 }
 
 const doFetchCoinList = async({state, dispatch}) => {
+    dispatch({type: "setFetchingCoinList", value: true});
     const coinListResp = await fetchCoinList();
     const cointlist = coinListResp.data.result;
     dispatch({type: "setPositionInput", item:"coinList", value:cointlist});
+    dispatch({type: "setFetchingCoinList", value: false});
 }
 
 const mainPanelStyle= {
