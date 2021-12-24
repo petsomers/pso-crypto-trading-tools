@@ -8,6 +8,7 @@ export const calcPosition=(state) => {
     const tp_input = parseFloat(state.tp);
     const sl_input = parseFloat(state.sl);
     const risk = parseFloat(state.risk);
+    const triggerPrice_input = parseFloat(state.triggerPrice);
 
     if ( Number.isNaN(maxAmount) || Number.isNaN(price_input) || Number.isNaN(tp_input) || Number.isNaN(sl_input) || Number.isNaN(risk)) {
         return {calculated: false};
@@ -18,7 +19,7 @@ export const calcPosition=(state) => {
     const price=roundStep(price_input, tickSize);
     const tp=roundStep(tp_input, tickSize);
     const sl=roundStep(sl_input, tickSize);
-
+    const triggerPrice = Number.isNaN(triggerPrice_input)?"":roundStep(triggerPrice_input, tickSize);
 
     const coinsWithoutLeverage=maxAmount / price;
     console.log("coinsWithoutLeverage",coinsWithoutLeverage);
@@ -48,6 +49,7 @@ export const calcPosition=(state) => {
         maxLoss: loss,
         maxProfit: profit,
         leverage: (leverage<1.0?1.0:leverage),
+        triggerPrice
     }
 
     console.log("Result", result);

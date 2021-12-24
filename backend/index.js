@@ -7,6 +7,7 @@ const app = express();
 const port = process.env.SERVER_PORT;
 const apiKey = process.env.BYBIT_API_KEY;
 const apiSecret = process.env.BYBIT_API_SECRET;
+app.use(express.json());
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
@@ -40,17 +41,24 @@ app.get('/api/bybit-get-symbols', async(req, res) => {
 
 
 
-app.get('/api/bybit-place-order', async(req, res) => {
+app.post('/api/bybit-place-order', async(req, res) => {
     // https://bybit-exchange.github.io/docs/linear/#t-placeactive
     // side: "Buy" or "Sell"
     // order_type: "Limit" or "Market"
     // time_in_force:"GoodTillCancel"
+    console.log("sending",req.body);
+    const result = await client.placeActiveOrder(req.body);
+    res.json(result);
+    //{ side: string; symbol: string; order_type: string; qty: number; price?: number; time_in_force: string; take_profit?: number; stop_loss?: number; tp_trigger_by?: string; sl_trigger_by?: string; reduce_only?: boolean; close_on_trigger?: boolean; order_link_id?: string; }
+})
 
-
-
-    const apiKeyInfo = await client.placeActiveOrder();
-    res.json(apiKeyInfo);
-
+app.post('/api/bybit-place-conditional-order', async(req, res) => {
+    // https://bybit-exchange.github.io/docs/linear/#t-placeactive
+    // side: "Buy" or "Sell"
+    // order_type: "Limit" or "Market"
+    // time_in_force:"GoodTillCancel"
+    //const result = await client.placeConditionalOrder(req.body);
+    //res.json(result);
     //{ side: string; symbol: string; order_type: string; qty: number; price?: number; time_in_force: string; take_profit?: number; stop_loss?: number; tp_trigger_by?: string; sl_trigger_by?: string; reduce_only?: boolean; close_on_trigger?: boolean; order_link_id?: string; }
 })
 

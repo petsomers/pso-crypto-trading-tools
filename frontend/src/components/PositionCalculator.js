@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import CoinSelection from './CoinSelection';
-import {callApiTest, fetchCoinList} from '../actions/ApiCalls'
+import {fetchCoinList, placeOrder} from '../actions/ApiCalls'
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -155,9 +155,7 @@ const PositionCalculator = ({state, dispatch}) => {
             </TableBody>
             </Table>
         </TableContainer>
-        <FormControlLabel 
-            control={<Checkbox checked={state.conditional} 
-            onChange={(v) => dispatch({type: "setPositionInput", item:"conditional", value:!state.conditional})}/>} label="Use Tick Size" />
+        <i>Step/tick sizes are taken into account</i>
         </Paper>
 )}
         <Paper elevation={3} style={inputPanelStyle}>
@@ -168,25 +166,29 @@ const PositionCalculator = ({state, dispatch}) => {
                 control={<Checkbox checked={state.conditional} 
                 onChange={(v) => dispatch({type: "setPositionInput", item:"conditional", value:!state.conditional})}/>} label="Conditional" />
             {state.conditional && (
-            <TextField
-                id = "triggerPrice"
-                className={classes.formControl}
-                label="Trigger Price"
-                margin="dense"
-                variant="outlined"
-                value={state.triggerPrice}
-                onChange={(v) => dispatch({type: "setPositionInput", item:"triggerPrice", value:v.target.value})}
-                InputProps={{
-                    endAdornment: <InputAdornment position="end">$</InputAdornment>,
-                }}
-            />)}
+                <>
+                <TextField
+                    id = "triggerPrice"
+                    className={classes.formControl}
+                    label="Trigger Price"
+                    margin="dense"
+                    variant="outlined"
+                    value={state.triggerPrice}
+                    onChange={(v) => dispatch({type: "setPositionInput", item:"triggerPrice", value:v.target.value})}
+                    InputProps={{
+                        endAdornment: <InputAdornment position="end">$</InputAdornment>,
+                    }}
+                />
+                With step size: {state.position.triggerPrice} $
+                </>
+            )}
             <br /><br />
             <Button
                 variant="contained"
                 
                 className={classes.button}
                 startIcon={<PlayCircleFilledWhiteIcon />}
-                onClick={() => callBybit(state, dispatch)}
+                onClick={() => doPlaceOrder(state, dispatch)}
             >Place Order with Bybit</Button>
         </Paper>
     </div>
@@ -194,8 +196,8 @@ const PositionCalculator = ({state, dispatch}) => {
 
   }
 
-const callBybit = (state, dispatch) => {
-    callApiTest();
+const doPlaceOrder = async(state, dispatch) => {
+    const result= await placeOrder(state);
 }
 
 const doFetchCoinList = async({state, dispatch}) => {
