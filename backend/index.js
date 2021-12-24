@@ -8,7 +8,7 @@ const port = process.env.SERVER_PORT;
 const apiKey = process.env.BYBIT_API_KEY;
 const apiSecret = process.env.BYBIT_API_SECRET;
 app.use(express.json());
-
+app.use(express.static('public'));
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })
