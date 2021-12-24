@@ -37,19 +37,10 @@ const PositionCalculator = ({state, dispatch}) => {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 Position Input
             </Typography>
-            {state.coinList ? (
+            {state.coinList && (
                 <CoinSelection state={state} dispatch={dispatch} coinList={state.coinList} />
-            ):(
-            <TextField
-                id = "coin"
-                className={classes.formControl}
-                label="Coin"
-                margin="dense"
-                variant="outlined"
-                value={state.coin}
-                onChange={(v) => dispatch({type: "setPositionInput", item:"coin", value:v.target.value.toUpperCase()})}
-            />
             )}
+
             <TextField
                 id = "maxAmount"
                 className={classes.formControl}
@@ -112,8 +103,9 @@ const PositionCalculator = ({state, dispatch}) => {
                 }}
             />
         </Paper>
+
+{state.position.calculated && (
         <Paper elevation={3} style={inputPanelStyle}>
-            
         <TableContainer component={Paper}>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 Position Calculation
@@ -122,7 +114,7 @@ const PositionCalculator = ({state, dispatch}) => {
             <TableBody>
                 <TableRow>
                     <TableCell component="th" scope="row">Coin</TableCell>
-                    <TableCell component="th" scope="row" style={{width: "200px"}}>{state.coin}</TableCell>
+                    <TableCell component="th" scope="row" style={{width: "200px"}}>{state.coin?state.coin.name:""}</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell component="th" scope="row">Type</TableCell>
@@ -134,7 +126,7 @@ const PositionCalculator = ({state, dispatch}) => {
                 </TableRow>
                 <TableRow>
                     <TableCell component="th" scope="row">Order Price</TableCell>
-                    <TableCell component="th" scope="row">{state.price} $</TableCell>
+                    <TableCell component="th" scope="row">{state.position.price} $</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell component="th" scope="row">QTY</TableCell>
@@ -142,28 +134,32 @@ const PositionCalculator = ({state, dispatch}) => {
                 </TableRow>
                 <TableRow>
                     <TableCell component="th" scope="row">Take Profit</TableCell>
-                    <TableCell component="th" scope="row">{state.tp} $</TableCell>
+                    <TableCell component="th" scope="row">{state.position.tp} $</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell component="th" scope="row">Stop Loss</TableCell>
-                    <TableCell component="th" scope="row">{state.sl} $</TableCell>
+                    <TableCell component="th" scope="row">{state.position.sl} $</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell component="th" scope="row">Order Value</TableCell>
-                    <TableCell component="th" scope="row">{state.position.realAmount} $</TableCell>
+                    <TableCell component="th" scope="row">{state.position.realAmount.toFixed(2)} $</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell component="th" scope="row">Max Loss</TableCell>
-                    <TableCell component="th" scope="row">{state.position.maxLoss} $</TableCell>
+                    <TableCell component="th" scope="row">{state.position.maxLoss.toFixed(2)} $</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell component="th" scope="row">Max Profit</TableCell>
-                    <TableCell component="th" scope="row">{state.position.maxProfit} $</TableCell>
+                    <TableCell component="th" scope="row">{state.position.maxProfit.toFixed(2)} $</TableCell>
                 </TableRow>
             </TableBody>
             </Table>
         </TableContainer>
+        <FormControlLabel 
+            control={<Checkbox checked={state.conditional} 
+            onChange={(v) => dispatch({type: "setPositionInput", item:"conditional", value:!state.conditional})}/>} label="Use Tick Size" />
         </Paper>
+)}
         <Paper elevation={3} style={inputPanelStyle}>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} style={{width: 250}}>
                 Place Order
@@ -204,8 +200,7 @@ const callBybit = (state, dispatch) => {
 
 const doFetchCoinList = async({state, dispatch}) => {
     const coinListResp = await fetchCoinList();
-    const cointlist = coinListResp.data.result.map(v => {return {...v, label: v.name}});
-    console.log("cointlist", coinListResp);
+    const cointlist = coinListResp.data.result;
     dispatch({type: "setPositionInput", item:"coinList", value:cointlist});
 }
 

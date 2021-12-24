@@ -9,10 +9,10 @@ const CoinSelection = ({state, dispatch}) => {
         id="combo-box-demo"
         options={state.coinList}
         sx={{ width: 300 }}
-        renderInput={(params) => <TextField {...params} label="Coin" />}
-
+        renderInput={(params) => <TextField {...params} label="Coin pair" />}
+        getOptionLabel={option => option.name}
         value={state.coin}
-        onChange={(v) => dispatch({type: "setPositionInput", item:"coin", value:v.target.value.toUpperCase()})}
+        onChange={(event, v) => dispatch({type: "setPositionInput", item:"coin", value:v})}
       />
     );
   }

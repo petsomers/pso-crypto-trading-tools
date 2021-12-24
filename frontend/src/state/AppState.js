@@ -1,7 +1,7 @@
 import {calcPosition} from '../actions/PositionCalcActions';
 
 export const initialState = {
-    coin: 'BTC',
+    coin: null,
     cointList: null,
     maxAmount: '',
     risk: '1',
