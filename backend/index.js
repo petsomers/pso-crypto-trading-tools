@@ -46,6 +46,10 @@ app.post('/api/bybit-place-order', async(req, res) => {
     // side: "Buy" or "Sell"
     // order_type: "Limit" or "Market"
     // time_in_force:"GoodTillCancel"
+
+    // TODO -> SWITCH TO ISOLATED 
+    // https://bybit-exchange.github.io/docs/inverse/#t-switchmode
+    // -> call /v2/private/position/switch-isolated
     console.log("sending",req.body);
     const result = await client.placeActiveOrder(req.body);
     res.json(result);
