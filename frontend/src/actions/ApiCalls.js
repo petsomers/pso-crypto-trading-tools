@@ -35,9 +35,9 @@ export const placeOrder = async(state) => {
             close_on_trigger: false,
         }
         if (state.conditional) {
-            const tickSize = state.coin.price_filter.tick_size;
-            const stop_px = state.position.triggerPrice;
-            const base_price=state.triggerPriceAscending?(stop_px - tickSize):(stop_px + tickSize)
+            const tickSize = parseFloat(state.coin.price_filter.tick_size);
+            const stop_px = parseFloat(state.position.triggerPrice);
+            const base_price = state.triggerPriceAscending?(stop_px - tickSize):(stop_px + tickSize)
             req = {
                 ...req, 
                 stop_px, base_price,
