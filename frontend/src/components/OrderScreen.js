@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import CoinSelection from './CoinSelection';
-import {fetchCoinList, placeOrder} from '../actions/ApiCalls'
+import {fetchInfoAndCoinList, placeOrder} from '../actions/ApiCalls'
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -25,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
 
 const OrderScreen = ({state, dispatch}) => {
     const classes = useStyles();
-    const coinList = state.coinList;
 
     useEffect(() => {
         doFetchCoinList({state, dispatch});
@@ -167,6 +166,9 @@ const OrderScreen = ({state, dispatch}) => {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} style={{width: 250}}>
                 Place Order
             </Typography>
+            <Typography variant="caption">
+                Bybit USDT Perpetual
+            </Typography>
             <FormControlLabel 
                 control={<Checkbox checked={state.conditional} 
                 onChange={(v) => dispatch({type: "setPositionInput", item:"conditional", value:!state.conditional})}/>} label="Conditional" />
@@ -185,7 +187,9 @@ const OrderScreen = ({state, dispatch}) => {
                     }}
                 />
                 {state.position.triggerPrice && (
-                    <span>Step adjustment: {state.position.triggerPrice} $</span>
+                    <Typography variant="caption">
+                        Step adjustment: {state.position.triggerPrice} $
+                    </Typography>
                 )}
                 </>
             )}
@@ -196,7 +200,17 @@ const OrderScreen = ({state, dispatch}) => {
                 className={classes.button}
                 startIcon={<PlayCircleFilledWhiteIcon />}
                 onClick={() => doPlaceOrder(state, dispatch)} >Place Order with Bybit</Button>
+            {state.apiInfo && (
+                <Paper style={{padding: 3}}>
+                <Typography variant="caption">
+                    <b>User ID:</b> {state.apiInfo.user_id}<br />
+                    <b>APi Key:</b> {state.apiInfo.api_key}<br />
+                    <b>Note:</b> {state.apiInfo.note}
+                </Typography>
+                </Paper>
+            )}
         </Paper>
+        
         </>
 )}
 {state.placeOrderResult && (
@@ -282,8 +296,11 @@ const doPlaceOrder = async(state, dispatch) => {
 
 const doFetchCoinList = async({state, dispatch}) => {
     dispatch({type: "setFetchingCoinList", value: true});
-    const cointlist = await fetchCoinList();
-    dispatch({type: "setPositionInput", item:"coinList", value:cointlist});
+    const infoAndcointlist = await fetchInfoAndCoinList();
+    dispatch({type: "setPositionInput", item:"coinList", 
+        value:infoAndcointlist.symbols.result?infoAndcointlist.symbols.result:null});
+    dispatch({type: "setApiInfo", item:"", 
+        value:infoAndcointlist.apiKeyInfo.result?infoAndcointlist.apiKeyInfo.result[0]:null});
     dispatch({type: "setFetchingCoinList", value: false});
 }
 

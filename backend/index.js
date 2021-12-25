@@ -33,10 +33,11 @@ app.get('/api/bybit-test', async(req, res) => {
     res.json(apiKeyInfo);
 })
 
-app.get('/api/bybit-get-symbols', async(req, res) => {
+app.get('/api/bybit-get-info-and-symbols', async(req, res) => {
     // https://bybit-exchange.github.io/docs/inverse/#t-publictradingrecords
     const symbols = await client.getSymbols();
-    return res.json(symbols);
+    const apiKeyInfo = await client.getApiKeyInfo();
+    return res.json({apiKeyInfo, symbols});
 })
 
 
@@ -45,23 +46,18 @@ app.post('/api/bybit-place-order', async(req, res) => {
     // https://bybit-exchange.github.io/docs/linear/#t-placeactive
     // TODO -> SWITCH TO ISOLATED 
     // https://bybit-exchange.github.io/docs/inverse/#t-
-    client.setSwitchMode()
     // -> call /v2/private/position/switch-isolated
     console.log("placeActiveOrder req",req.body);
     const result = await client.placeActiveOrder(req.body);
     console.log("placeActiveOrder resp",result);
     res.json(result);
-    //{ side: string; symbol: string; order_type: string; qty: number; price?: number; time_in_force: string; take_profit?: number; stop_loss?: number; tp_trigger_by?: string; sl_trigger_by?: string; reduce_only?: boolean; close_on_trigger?: boolean; order_link_id?: string; }
 })
 
 app.post('/api/bybit-place-conditional-order', async(req, res) => {
-    // https://bybit-exchange.github.io/docs/linear/#t-placeactive
-    // side: "Buy" or "Sell"
-    // order_type: "Limit" or "Market"
-    // time_in_force:"GoodTillCancel"
-    //const result = await client.placeConditionalOrder(req.body);
-    //res.json(result);
-    //{ side: string; symbol: string; order_type: string; qty: number; price?: number; time_in_force: string; take_profit?: number; stop_loss?: number; tp_trigger_by?: string; sl_trigger_by?: string; reduce_only?: boolean; close_on_trigger?: boolean; order_link_id?: string; }
+    console.log("placeConditionalOrder req",req.body);
+    const result = await client.placeConditionalOrder(req.body);
+    console.log("placeConditionalOrder resp",result);
+    res.json(result);
 })
 
 

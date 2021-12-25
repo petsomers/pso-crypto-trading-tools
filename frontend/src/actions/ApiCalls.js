@@ -9,10 +9,10 @@ export const callApiTest = async () => {
         return "ERROR";
     }
 }
-export const fetchCoinList = async() => {
+export const fetchInfoAndCoinList = async() => {
     try {
-        const result = await axios.get("/api/bybit-get-symbols");
-        return result.data.result;
+        const result = await axios.get("/api/bybit-get-info-and-symbols");
+        return result.data;
     } catch (e) {
         console.log("Error calling /api/bybit-test", e);
         return "ERROR";

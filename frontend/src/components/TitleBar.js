@@ -17,7 +17,7 @@ const TitleBar = ({state, dispatch}) => {
         <AppBar position="static">
             <Toolbar>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                PSO Bybit client
+                PSO Crypto Position Calculation
                 </Typography>
             </Toolbar>
         </AppBar>

@@ -11,7 +11,7 @@ export const initialState = {
     triggerPrice: '',
     conditional: false,
     position: {},
-    apiOutput: '',
+    apiInfo: null,
     fetchingCoinList: false,
     placingOrder: false,
     placeOrderResult: null,
@@ -36,6 +36,7 @@ const actualReducer = (state, action) => {
         case 'setPlacingOrder': return { ...state, placingOrder: action.value};
         case 'setFetchingCoinList': return {...state, fetchingCoinList: action.value};
         case 'setPlaceOrderResult': return {...state, placeOrderResult: action.value};
+        case 'setApiInfo': return {...state, apiInfo: action.value};
         default:
             throw new Error("Unsupported action type: "+action.type);
     }
