@@ -39,6 +39,7 @@ export const placeOrder = async(state) => {
                 ...req, 
                 stop_px: state.position.triggerPrice, 
                 base_price: state.position.triggerPrice,
+                trigger_by: 'LastPrice',
             };
         }
         endPoint = state.conditional?"/api/bybit-place-conditional-order":"/api/bybit-place-order";
