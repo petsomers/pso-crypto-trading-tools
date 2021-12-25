@@ -10,6 +10,7 @@ export const initialState = {
     sl: '',
     triggerPrice: '',
     conditional: false,
+    triggerPriceAscending: true,
     position: {},
     apiInfo: null,
     fetchingCoinList: false,

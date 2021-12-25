@@ -61,3 +61,6 @@ app.post('/api/bybit-place-conditional-order', async(req, res) => {
 })
 
 
+// all error codes:
+// https://bybit-exchange.github.io/docs/linear/#t-errors
+

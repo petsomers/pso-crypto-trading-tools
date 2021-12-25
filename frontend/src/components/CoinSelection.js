@@ -8,7 +8,7 @@ const CoinSelection = ({state, dispatch}) => {
         disablePortal
         id="combo-box-demo"
         options={state.coinList}
-        sx={{ width: 300 }}
+        sx={{ width: 250 }}
         renderInput={(params) => <TextField {...params} label="Coin pair" />}
         getOptionLabel={option => option.name}
         value={state.coin}
