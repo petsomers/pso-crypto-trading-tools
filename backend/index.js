@@ -43,15 +43,13 @@ app.get('/api/bybit-get-symbols', async(req, res) => {
 
 app.post('/api/bybit-place-order', async(req, res) => {
     // https://bybit-exchange.github.io/docs/linear/#t-placeactive
-    // side: "Buy" or "Sell"
-    // order_type: "Limit" or "Market"
-    // time_in_force:"GoodTillCancel"
-
     // TODO -> SWITCH TO ISOLATED 
-    // https://bybit-exchange.github.io/docs/inverse/#t-switchmode
+    // https://bybit-exchange.github.io/docs/inverse/#t-
+    client.setSwitchMode()
     // -> call /v2/private/position/switch-isolated
-    console.log("sending",req.body);
+    console.log("placeActiveOrder req",req.body);
     const result = await client.placeActiveOrder(req.body);
+    console.log("placeActiveOrder resp",result);
     res.json(result);
     //{ side: string; symbol: string; order_type: string; qty: number; price?: number; time_in_force: string; take_profit?: number; stop_loss?: number; tp_trigger_by?: string; sl_trigger_by?: string; reduce_only?: boolean; close_on_trigger?: boolean; order_link_id?: string; }
 })

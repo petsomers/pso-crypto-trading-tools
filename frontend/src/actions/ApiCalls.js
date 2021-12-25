@@ -12,7 +12,7 @@ export const callApiTest = async () => {
 export const fetchCoinList = async() => {
     try {
         const result = await axios.get("/api/bybit-get-symbols");
-        return result;
+        return result.data.result;
     } catch (e) {
         console.log("Error calling /api/bybit-test", e);
         return "ERROR";
@@ -51,7 +51,7 @@ export const placeOrder = async(state) => {
             }
           });
         console.log("placeOrder result", result);
-        return result;
+        return result.data;
     } catch (e) {
         console.log("Error calling "+endPoint, e);
         return "ERROR";

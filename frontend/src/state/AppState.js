@@ -13,7 +13,8 @@ export const initialState = {
     position: {},
     apiOutput: '',
     fetchingCoinList: false,
-    callingApi: false,
+    placingOrder: false,
+    placeOrderResult: null,
 };
 
 export const reducer = (state, action) => {
@@ -32,8 +33,9 @@ const actualReducer = (state, action) => {
             newState = {...newState, position: calcPosition(newState)};
             return newState;
         case 'setApiOutput': return {...state, apiOutput: action.value};
-        case 'setCallingApi': return { ...state, callingApi: action.value};
+        case 'setPlacingOrder': return { ...state, placingOrder: action.value};
         case 'setFetchingCoinList': return {...state, fetchingCoinList: action.value};
+        case 'setPlaceOrderResult': return {...state, placeOrderResult: action.value};
         default:
             throw new Error("Unsupported action type: "+action.type);
     }

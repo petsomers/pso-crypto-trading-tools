@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     
 }));
 
-const PositionCalculator = ({state, dispatch}) => {
+const OrderScreen = ({state, dispatch}) => {
     const classes = useStyles();
     const coinList = state.coinList;
 
@@ -110,11 +110,12 @@ const PositionCalculator = ({state, dispatch}) => {
         </Paper>
 
 {state.position.calculated && (
+    <>
         <Paper elevation={3} style={inputPanelStyle}>
-        <TableContainer component={Paper}>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 Position Calculation
             </Typography>
+        <TableContainer component={Paper}>
             <Table size="small" aria-label="a dense table">
             <TableBody>
                 <TableRow>
@@ -162,7 +163,6 @@ const PositionCalculator = ({state, dispatch}) => {
         </TableContainer>
         <i>Step/tick sizes are taken into account</i>
         </Paper>
-)}
         <Paper elevation={3} style={inputPanelStyle}>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} style={{width: 250}}>
                 Place Order
@@ -184,31 +184,105 @@ const PositionCalculator = ({state, dispatch}) => {
                         endAdornment: <InputAdornment position="end">$</InputAdornment>,
                     }}
                 />
-                With step size: {state.position.triggerPrice} $
+                {state.position.triggerPrice && (
+                    <span>Step adjustment: {state.position.triggerPrice} $</span>
+                )}
                 </>
             )}
             <br /><br />
             <Button
                 variant="contained"
-                
+                disabled={state.placingOrder}
                 className={classes.button}
                 startIcon={<PlayCircleFilledWhiteIcon />}
-                onClick={() => doPlaceOrder(state, dispatch)}
-            >Place Order with Bybit</Button>
+                onClick={() => doPlaceOrder(state, dispatch)} >Place Order with Bybit</Button>
         </Paper>
+        </>
+)}
+{state.placeOrderResult && (
+        <Paper elevation={3} style={inputPanelStyle}>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                Place Order Result
+            </Typography>
+        <TableContainer component={Paper}>
+            <Table size="small" aria-label="a dense table">
+            <TableBody>
+                <TableRow>
+                    <TableCell component="th" scope="row">Message</TableCell>
+                    <TableCell component="th" scope="row" style={{width: "200px"}}>{state.placeOrderResult.ret_msg}</TableCell>
+                </TableRow>
+                {state.placeOrderResult.ret_code !== 0 && (
+                    <TableRow>
+                        <TableCell component="th" scope="row">Return Code</TableCell>
+                    <TableCell component="th" scope="row">{state.placeOrderResult.ret_code}</TableCell>
+                </TableRow>
+                )}
+                {state.placeOrderResult.result && (
+                <>
+                <TableRow>
+                    <TableCell component="th" scope="row">User Id</TableCell>
+                    <TableCell component="th" scope="row">{state.placeOrderResult.result.user_id}</TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell component="th" scope="row">Symbol</TableCell>
+                    <TableCell component="th" scope="row">{state.placeOrderResult.result.symbol}</TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell component="th" scope="row">Created On</TableCell>
+                    <TableCell component="th" scope="row">{state.placeOrderResult.result.created_time}</TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell component="th" scope="row">Order Status</TableCell>
+                    <TableCell component="th" scope="row">{state.placeOrderResult.result.order_status}</TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell component="th" scope="row">Time in Force</TableCell>
+                    <TableCell component="th" scope="row">{state.placeOrderResult.result.time_in_force}</TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell component="th" scope="row">Side</TableCell>
+                    <TableCell component="th" scope="row">{state.placeOrderResult.result.side==="Buy"?"LONG":"SHORT"}</TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell component="th" scope="row">Price</TableCell>
+                    <TableCell component="th" scope="row">{state.placeOrderResult.result.price}</TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell component="th" scope="row">QTY</TableCell>
+                    <TableCell component="th" scope="row">{state.placeOrderResult.result.qty}</TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell component="th" scope="row">Take Profit</TableCell>
+                    <TableCell component="th" scope="row">{state.placeOrderResult.result.take_profit}</TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell component="th" scope="row">Stop Loss</TableCell>
+                    <TableCell component="th" scope="row">{state.placeOrderResult.result.stop_loss}</TableCell>
+                </TableRow>
+                </>
+                )}
+            </TableBody>
+            </Table>
+        </TableContainer>
+        </Paper>
+)}
     </div>
     );
 
   }
 
 const doPlaceOrder = async(state, dispatch) => {
+    if (state.placingOrder) return; // already ongoing
+    dispatch({type: "setPlacingOrder", value: true});
+    dispatch({type: "setPlaceOrderResult", value: null});
     const result= await placeOrder(state);
+    dispatch({type: "setPlacingOrder", value: false});
+    dispatch({type: "setPlaceOrderResult", value: result});
 }
 
 const doFetchCoinList = async({state, dispatch}) => {
     dispatch({type: "setFetchingCoinList", value: true});
-    const coinListResp = await fetchCoinList();
-    const cointlist = coinListResp.data.result;
+    const cointlist = await fetchCoinList();
     dispatch({type: "setPositionInput", item:"coinList", value:cointlist});
     dispatch({type: "setFetchingCoinList", value: false});
 }
@@ -230,4 +304,4 @@ const inputPanelStyle= {
     margin: 5,
 }
 
-  export default PositionCalculator;
+  export default OrderScreen;
