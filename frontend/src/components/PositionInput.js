@@ -10,7 +10,6 @@ const useStyles = makeStyles((theme) => ({
     formControl: {
         width: "250px",
     },
-    
 }));
 
 const PositionInput = ({state, dispatch}) => {
@@ -40,9 +39,8 @@ const PositionInput = ({state, dispatch}) => {
         InputProps={{
             endAdornment: <InputAdornment position="end">$</InputAdornment>,
         }}
-        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} 
     />
-        <TextField
+    <TextField
         id = "risk"
         className={classes.formControl}
         label="Risk"

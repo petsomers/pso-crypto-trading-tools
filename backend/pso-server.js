@@ -43,10 +43,11 @@ app.get('/api/bybit-get-info-and-symbols', async(req, res) => {
 
 
 app.post('/api/bybit-place-order', async(req, res) => {
-    // https://bybit-exchange.github.io/docs/linear/#t-placeactive
-    // TODO -> SWITCH TO ISOLATED 
-    // https://bybit-exchange.github.io/docs/inverse/#t-
-    // -> call /v2/private/position/switch-isolated
+    const symbol = req.body.symbol;
+    const leverage = req.body.leverage;
+    // switch to isolated and set leverage
+    console.log("setting isolated margin and set leverate to "+leverage);
+    await client.setMarginSwitch({symbol: symbol, is_isolated: true, buy_leverage: leverage, sell_leverage:leverage});
     console.log("placeActiveOrder req",req.body);
     const result = await client.placeActiveOrder(req.body);
     console.log("placeActiveOrder resp",result);
@@ -54,6 +55,11 @@ app.post('/api/bybit-place-order', async(req, res) => {
 })
 
 app.post('/api/bybit-place-conditional-order', async(req, res) => {
+    const symbol = req.body.symbol;
+    const leverage = req.body.leverage;
+    // switch to isolated and set leverage
+    console.log("setting isolated margin and set leverate to "+leverage);
+    await client.setMarginSwitch({symbol: symbol, is_isolated: true, buy_leverage: leverage, sell_leverage:leverage});
     console.log("placeConditionalOrder req",req.body);
     const result = await client.placeConditionalOrder(req.body);
     console.log("placeConditionalOrder resp",result);

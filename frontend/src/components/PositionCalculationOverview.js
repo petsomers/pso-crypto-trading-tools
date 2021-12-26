@@ -1,4 +1,5 @@
 import {React} from 'react';
+import { makeStyles } from '@mui/styles';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -6,12 +7,18 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
 
+
+const useStyles = makeStyles((theme) => ({
+    formControl: {
+        width: "250px",
+    },
+}));
 
 const PositionCalculationOverview = ({state, dispatch}) => {
-
-    return (
-
+    const classes = useStyles();
+return (
 <Paper elevation={3} style={inputPanelStyle}>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 Position Calculation
@@ -29,7 +36,15 @@ const PositionCalculationOverview = ({state, dispatch}) => {
                 </TableRow>
                 <TableRow>
                     <TableCell component="th" scope="row">Leverage</TableCell>
-                    <TableCell component="th" scope="row">{state.position.leverage}</TableCell>
+                    <TableCell component="th" scope="row">
+                            <TextField
+                                id = "leverage"
+                                margin="dense"
+                                variant="standard"
+                                value={state.position.leverage}
+                                onChange={(v) => dispatch({type: "changeLeverage", value:v.target.value})}
+                            />
+                    </TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell component="th" scope="row">Order Price</TableCell>

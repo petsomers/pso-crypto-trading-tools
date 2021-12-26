@@ -27,7 +27,7 @@ export const calcPosition=(state) => {
     console.log("lossWithoutLeverage",lossWithoutLeverage);
     const maxLoss = maxAmount * risk / 100.0;
     console.log("maxLoss",maxLoss);
-    const leverageWithMaxLoss = roundStepFloor(maxLoss / lossWithoutLeverage, leverateTickSize);
+    const leverageWithMaxLoss = maxLoss / lossWithoutLeverage;
     console.log("leverageWithMaxLoss",leverageWithMaxLoss);
     const coinsWithLeverage = coinsWithoutLeverage * leverageWithMaxLoss;
     console.log("coinsWithLeverage",coinsWithLeverage);
@@ -39,7 +39,7 @@ export const calcPosition=(state) => {
     console.log("loss",loss);
 
     const long = price < tp;
-    const leverage = long?leverageWithMaxLoss:-leverageWithMaxLoss;
+    const leverage = roundStepCeil(long?leverageWithMaxLoss:-leverageWithMaxLoss, leverateTickSize);
     const result =  {
         calculated: true,
         type: long?"LONG":"SHORT",
@@ -62,8 +62,8 @@ function roundStep(qty, stepSize) {
     return ((Math.round(qty / stepSize) | 0) * stepSize).toFixed(precision);
 }
 
-function roundStepFloor(qty, stepSize) {
+function roundStepCeil(qty, stepSize) {
     const stepSizeStr = stepSize.toString();
     const precision = stepSizeStr.indexOf(".")>0?stepSizeStr.split('.')[1].length || 0:0;
-    return ((Math.floor(qty / stepSize) | 0) * stepSize).toFixed(precision);
+    return ((Math.ceil(qty / stepSize) | 0) * stepSize).toFixed(precision);
 }

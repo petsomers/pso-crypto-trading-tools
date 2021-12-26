@@ -38,6 +38,7 @@ const actualReducer = (state, action) => {
         case 'setFetchingCoinList': return {...state, fetchingCoinList: action.value};
         case 'setPlaceOrderResult': return {...state, placeOrderResult: action.value};
         case 'setApiInfo': return {...state, apiInfo: action.value};
+        case 'changeLeverage': return {...state, position: {...state.position, leverage:action.value }};
         default:
             throw new Error("Unsupported action type: "+action.type);
     }
