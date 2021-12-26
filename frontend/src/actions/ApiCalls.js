@@ -33,7 +33,7 @@ export const placeOrder = async(state) => {
             stop_loss: parseFloat(state.position.sl),
             reduce_only: false,
             close_on_trigger: false,
-            leverage: state.position.leverage,
+            leverage: parseFloat(state.position.leverage),
         }
         if (state.conditional) {
             const tickSize = parseFloat(state.coin.price_filter.tick_size);
