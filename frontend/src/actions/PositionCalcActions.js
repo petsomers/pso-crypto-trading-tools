@@ -48,8 +48,9 @@ export const calcPosition=(state) => {
         realAmount: (long?priceWithLeverage:-priceWithLeverage),
         maxLoss: loss,
         maxProfit: profit,
-        leverage: (leverage<1.0?1.0:leverage),
-        triggerPrice
+        minLeverage: (leverage<1.0?1.0:leverage),
+        triggerPrice,
+        riskReward: (profit/loss)
     }
 
     console.log("Result", result);

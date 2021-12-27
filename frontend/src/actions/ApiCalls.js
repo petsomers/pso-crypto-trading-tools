@@ -33,7 +33,6 @@ export const placeOrder = async(state) => {
             stop_loss: parseFloat(state.position.sl),
             reduce_only: false,
             close_on_trigger: false,
-            leverage: parseFloat(state.position.leverage),
         }
         if (state.conditional) {
             const tickSize = parseFloat(state.coin.price_filter.tick_size);
@@ -47,12 +46,7 @@ export const placeOrder = async(state) => {
         }
         endPoint = state.conditional?"/api/bybit-place-conditional-order":"/api/bybit-place-order";
         const result = await axios.post(endPoint, req,{
-            headers: {
-              // 'application/json' is the modern content-type for JSON, but some
-              // older servers may use 'text/json'.
-              // See: http://bit.ly/text-json
-              'content-type': 'application/json;charset=utf-8'
-            }
+            headers: {'content-type': 'application/json;charset=utf-8'}
           });
         console.log("placeOrder result", result);
         return result.data;

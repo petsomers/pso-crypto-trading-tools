@@ -55,17 +55,24 @@ app.post('/api/bybit-place-order', async(req, res) => {
 })
 
 app.post('/api/bybit-place-conditional-order', async(req, res) => {
-    const symbol = req.body.symbol;
-    const leverage = req.body.leverage;
-    // switch to isolated and set leverage
-    console.log("setting isolated margin and set leverate to "+leverage);
-    await client.setMarginSwitch({symbol: symbol, is_isolated: true, buy_leverage: leverage, sell_leverage:leverage});
     console.log("placeConditionalOrder req",req.body);
     const result = await client.placeConditionalOrder(req.body);
     console.log("placeConditionalOrder resp",result);
     res.json(result);
 })
 
+
+app.get('/api/bybit-get-leverage-info', async(req, res) => {
+    
+})
+
+app.post('/api/bybit-change-leverage', async(req, res) => {
+    const symbol = req.body.symbol;
+    const leverage = req.body.leverage;
+    // switch to isolated and set leverage
+    console.log("setting isolated margin and set leverate to "+leverage);
+    await client.setMarginSwitch({symbol: symbol, is_isolated: true, buy_leverage: leverage, sell_leverage:leverage});
+})
 
 // all error codes:
 // https://bybit-exchange.github.io/docs/linear/#t-errors
