@@ -56,6 +56,12 @@ return (
             <TableCell component="th" scope="row">Side</TableCell>
             <TableCell component="th" scope="row">{state.placeOrderResult.result.side==="Buy"?"LONG":"SHORT"}</TableCell>
         </TableRow>
+        {state.placeOrderResult.result.trigger_price && (
+            <TableRow>
+                <TableCell component="th" scope="row">Trigger Price</TableCell>
+                <TableCell component="th" scope="row">{state.placeOrderResult.result.trigger_price}</TableCell>
+            </TableRow>
+        )}
         <TableRow>
             <TableCell component="th" scope="row">Price</TableCell>
             <TableCell component="th" scope="row">{state.placeOrderResult.result.price}</TableCell>
