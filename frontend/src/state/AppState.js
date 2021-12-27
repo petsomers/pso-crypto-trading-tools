@@ -11,6 +11,7 @@ export const initialState = {
     triggerPrice: '',
     conditional: false,
     triggerPriceAscending: true,
+    timeInForce: "PostOnly",
     position: {},
     apiInfo: null,
     fetchingCoinList: false,

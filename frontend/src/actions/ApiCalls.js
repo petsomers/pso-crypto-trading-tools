@@ -1,4 +1,5 @@
-import axios from "axios"
+import axios from "axios";
+import {roundStep} from "./PositionCalcActions";
 
 export const callApiTest = async () => {
     try {
@@ -28,7 +29,7 @@ export const placeOrder = async(state) => {
             order_type: "Limit",
             qty: parseFloat(state.position.coins),
             price: parseFloat(state.position.price),
-            time_in_force: "GoodTillCancel",
+            time_in_force: state.timeInforce,
             take_profit: parseFloat(state.position.tp),
             stop_loss: parseFloat(state.position.sl),
             reduce_only: false,
@@ -37,7 +38,7 @@ export const placeOrder = async(state) => {
         if (state.conditional) {
             const tickSize = parseFloat(state.coin.price_filter.tick_size);
             const stop_px = parseFloat(state.position.triggerPrice);
-            const base_price = state.triggerPriceAscending?(stop_px - tickSize):(stop_px + tickSize)
+            const base_price = roundStep(state.triggerPriceAscending?(stop_px - tickSize*2):(stop_px + tickSize*2), tickSize);
             req = {
                 ...req, 
                 stop_px, base_price,

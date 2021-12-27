@@ -57,13 +57,13 @@ export const calcPosition=(state) => {
     return result;
 }
 
-function roundStep(qty, stepSize) {
+export const roundStep = (qty, stepSize) => {
     const stepSizeStr = stepSize.toString();
     const precision = stepSizeStr.indexOf(".")>0?stepSizeStr.split('.')[1].length || 0:0;
     return ((Math.round(qty / stepSize) | 0) * stepSize).toFixed(precision);
 }
 
-function roundStepCeil(qty, stepSize) {
+export const roundStepCeil = (qty, stepSize) => {
     const stepSizeStr = stepSize.toString();
     const precision = stepSizeStr.indexOf(".")>0?stepSizeStr.split('.')[1].length || 0:0;
     return ((Math.ceil(qty / stepSize) | 0) * stepSize).toFixed(precision);

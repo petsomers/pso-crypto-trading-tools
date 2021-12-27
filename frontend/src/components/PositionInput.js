@@ -18,8 +18,6 @@ const PositionInput = ({state, dispatch}) => {
 <Paper elevation={3} style={inputPanelStyle}>
     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
         Position Input
-        <br /> SHOULD BE POST_ONLY!<br />
-        Otherwise limit order will be market orders!!!
     </Typography>
     
     {state.coinList && (

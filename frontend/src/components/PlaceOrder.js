@@ -10,6 +10,10 @@ import Checkbox from '@mui/material/Checkbox';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 import {placeOrder} from '../actions/ApiCalls'
 
@@ -64,7 +68,23 @@ return (
         </ToggleButtonGroup>
         </>
     )}
-    <br /><br />
+    <br />
+    <FormControl fullWidth>
+        <InputLabel id="timeInforceLabel">Time In Force</InputLabel>
+        <Select
+        labelId="timeInforceLabel"
+        id="timeInforceLabel"
+        value={state.timeInForce}
+        label="Time In Force"
+        onChange={(e) =>  dispatch({type: "setPositionInput", item:"timeInForce", value: e.target.value})}
+        >
+            <MenuItem value="GoodTillCancel">GoodTillCancel</MenuItem>
+            <MenuItem value="ImmediateOrCancel">ImmediateOrCancel</MenuItem>
+            <MenuItem value="FillOrKill">FillOrKill</MenuItem>
+            <MenuItem value="PostOnly">PostOnly</MenuItem>
+        </Select>
+    </FormControl>
+      <br />
     <Button
         variant="contained"
         disabled={state.placingOrder}
