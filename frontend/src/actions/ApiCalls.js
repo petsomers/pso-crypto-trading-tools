@@ -29,7 +29,7 @@ export const placeOrder = async(state) => {
             order_type: "Limit",
             qty: parseFloat(state.position.coins),
             price: parseFloat(state.position.price),
-            time_in_force: state.timeInforce,
+            time_in_force: state.timeInForce,
             take_profit: parseFloat(state.position.tp),
             stop_loss: parseFloat(state.position.sl),
             reduce_only: false,
