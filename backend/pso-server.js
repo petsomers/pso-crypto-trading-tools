@@ -10,13 +10,10 @@ const port = process.env.SERVER_PORT;
 app.use(express.json());
 
 setupApi(app);
+performTradeLogSetup();
 
 app.use(express.static('frontend_build'));
 app.listen(port, () => {
-    performTradeLogSetup();
     console.log(`PSO Bybit Client listening at http://localhost:${port}`)
-    appendLog({ret_code: '00', ret_msg: 'Server Started'});
 })
   
-
-
