@@ -1,79 +1,22 @@
 const process = require('process');
 require('dotenv').config();
-const { LinearClient  } = require('bybit-api');
+const { performTradeLogSetup, appendLog } = require('./TradeLogService');
+const { setupApi } = require('./ApiService');
 
 const express = require('express')
 const app = express();
 const port = process.env.SERVER_PORT;
-const apiKey = process.env.BYBIT_API_KEY;
-const apiSecret = process.env.BYBIT_API_SECRET;
+
 app.use(express.json());
+
+setupApi(app);
+
 app.use(express.static('frontend_build'));
 app.listen(port, () => {
+    performTradeLogSetup();
     console.log(`PSO Bybit Client listening at http://localhost:${port}`)
+    appendLog({ret_code: '00', ret_msg: 'Server Started'});
 })
   
-  
 
-const client = new LinearClient (
-    apiKey,
-    apiSecret,
-    // optional, uses testnet by default. Set to 'true' to use livenet.
-    false, //useLivenet
-    // restClientOptions,
-    // requestLibraryOptions
-);
-
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
-app.get('/api/bybit-test', async(req, res) => {
-    const apiKeyInfo = await client.getApiKeyInfo();
-    res.json(apiKeyInfo);
-})
-
-app.get('/api/bybit-get-info-and-symbols', async(req, res) => {
-    // https://bybit-exchange.github.io/docs/inverse/#t-publictradingrecords
-    const symbols = await client.getSymbols();
-    const apiKeyInfo = await client.getApiKeyInfo();
-    return res.json({apiKeyInfo, symbols});
-})
-
-
-
-app.post('/api/bybit-place-order', async(req, res) => {
-    const symbol = req.body.symbol;
-    const leverage = req.body.leverage;
-    // switch to isolated and set leverage
-    console.log("setting isolated margin and set leverate to "+leverage);
-    await client.setMarginSwitch({symbol: symbol, is_isolated: true, buy_leverage: leverage, sell_leverage:leverage});
-    console.log("placeActiveOrder req",req.body);
-    const result = await client.placeActiveOrder(req.body);
-    console.log("placeActiveOrder resp",result);
-    res.json(result);
-})
-
-app.post('/api/bybit-place-conditional-order', async(req, res) => {
-    console.log("placeConditionalOrder req",req.body);
-    const result = await client.placeConditionalOrder(req.body);
-    console.log("placeConditionalOrder resp",result);
-    res.json(result);
-})
-
-
-app.get('/api/bybit-get-leverage-info', async(req, res) => {
-    
-})
-
-app.post('/api/bybit-change-leverage', async(req, res) => {
-    const symbol = req.body.symbol;
-    const leverage = req.body.leverage;
-    // switch to isolated and set leverage
-    console.log("setting isolated margin and set leverate to "+leverage);
-    await client.setMarginSwitch({symbol: symbol, is_isolated: true, buy_leverage: leverage, sell_leverage:leverage});
-})
-
-// all error codes:
-// https://bybit-exchange.github.io/docs/linear/#t-errors
 
