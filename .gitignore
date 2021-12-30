@@ -2,6 +2,7 @@
 /frontend/build
 /backend/node_modules
 /backend/frontend_build
+/backend/trade-log
 /.pnp
 
 .env
