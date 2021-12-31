@@ -17,7 +17,6 @@ const appendLog = async (bybitResponse) => {
     const output = [getTimeStamp(), r.ret_code, r.ret_msg];
     if (r.result) {
         const res = r.result;
-        output.push(res.created_time);
         output.push(res.userId);
         output.push(res.symbol);
         output.push(res.side==="Buy"?"LONG":"SHORT");

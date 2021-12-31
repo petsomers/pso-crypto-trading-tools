@@ -1,2 +1,1 @@
-cd backend
-node pso-server.js
+node ./backend/pso-server.js
