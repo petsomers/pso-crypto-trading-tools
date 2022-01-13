@@ -2,8 +2,6 @@ require('dotenv').config();
 const { LinearClient  } = require('bybit-api');
 const { appendLog } = require('./TradeLogService');
 
-const { getTradesFromDb } = require('./TradeLogDbService');
-
 const apiKey = process.env.BYBIT_API_KEY;
 const apiSecret = process.env.BYBIT_API_SECRET;
 const client = new LinearClient (
@@ -16,8 +14,6 @@ const client = new LinearClient (
 );
 
 setupApi = (app) => {
-    getTradesFromDb();
-
     app.get('/api/bybit-test', async(req, res) => {
         const apiKeyInfo = await client.getApiKeyInfo();
         res.json(apiKeyInfo);
