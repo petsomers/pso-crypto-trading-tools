@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { LinearClient  } = require('bybit-api');
 const { appendLog } = require('./TradeLogService');
+const { tradeLogDbServce } = require ('./TradeLogDbService');
 
 const apiKey = process.env.BYBIT_API_KEY;
 const apiSecret = process.env.BYBIT_API_SECRET;
@@ -35,7 +36,8 @@ setupApi = (app) => {
         console.log("placeActiveOrder req",req.body);
         const result = await client.placeActiveOrder(req.body);
         console.log("placeActiveOrder resp",result);
-        appendLog(result);
+        await appendLog(result);
+        await tradeLogDbServce.saveNewTrade(result);
         res.json(result);
     })
 

@@ -50,7 +50,8 @@ export const calcPosition=(state) => {
         maxProfit: profit,
         minLeverage: (leverage<1.0?1.0:leverage),
         triggerPrice,
-        riskReward: (profit/loss)
+        riskReward: (profit/loss),
+        breakEvenWinRate: 1/(1+profit/loss)
     }
 
     console.log("Result", result);

@@ -60,6 +60,10 @@ return (
                     <TableCell component="th" scope="row">RRR</TableCell>
                     <TableCell component="th" scope="row">{state.position.riskReward.toFixed(2)}</TableCell>
                 </TableRow>
+                <TableRow>
+                    <TableCell component="th" scope="row">Min Win Rate</TableCell>
+                    <TableCell component="th" scope="row">{(state.position.breakEvenWinRate*100.0).toFixed(0)} %</TableCell>
+                </TableRow>
             </TableBody>
             </Table>
         </TableContainer>

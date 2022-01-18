@@ -1,8 +1,8 @@
 const process = require('process');
 require('dotenv').config();
-const { performTradeLogSetup, appendLog } = require('./TradeLogService');
-const { tradeLogDbServce } = require ('./TradeLogDbService');
-const { setupApi } = require('./ApiService');
+const { performTradeLogSetup, appendLog } = require('./services/TradeLogService');
+const { tradeLogDbServce } = require ('./services/TradeLogDbService');
+const { setupApi } = require('./services/ApiService');
 
 const express = require('express')
 const app = express();
