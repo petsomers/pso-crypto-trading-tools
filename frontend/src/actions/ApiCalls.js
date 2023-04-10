@@ -26,6 +26,7 @@ export const placeOrder = async(state) => {
         let req = {
             side: state.position.type==="LONG"?"Buy":"Sell",
             symbol: state.coin.name,
+            leverage: parseFloat(state.position.minLeverage),
             order_type: "Limit",
             qty: parseFloat(state.position.coins),
             price: parseFloat(state.position.price),
